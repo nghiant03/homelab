@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: soft-serve
+  namespace: git
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: soft-serve
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: soft-serve
+    spec:
+      containers:
+        - name: soft-serve
+          image: charmcli/soft-serve:v0.11.6
+          env:
+            - name: SOFT_SERVE_DATA_PATH
+              value: /soft-serve
+            - name: SOFT_SERVE_INITIAL_ADMIN_KEYS
+              valueFrom:
+                secretKeyRef:
+                  name: soft-serve-admin-key
+                  key: admin_keys
+          ports:
+            - name: ssh
+              containerPort: 23231
+            - name: http
+              containerPort: 23232
+            - name: stats
+              containerPort: 23233
+            - name: git
+              containerPort: 9418
+          volumeMounts:
+            - mountPath: /soft-serve
+              name: data
+      volumes:
+        - name: data
+          persistentVolumeClaim: 
+            claimName: soft-serve-data
