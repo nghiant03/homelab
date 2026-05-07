@@ -1,0 +1,35 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: homepage-config
+  namespace: homepage
+data:
+  kubernetes.yaml: |
+    mode: cluster
+    ingress: true
+
+  settings.yaml: |
+    title: Homelab
+    theme: dark
+    color: slate
+
+  custom.css: ""
+  custom.js: ""
+  bookmarks.yaml: ""
+  docker.yaml: ""
+
+  widgets.yaml: |
+    - kubernetes:
+        cluster:
+          show: true
+          cpu: true
+          memory: true
+          showLabel: true
+          label: homelab
+        nodes:
+          show: true
+          cpu: true
+          memory: true
+
+  services.yaml: |
+    []
