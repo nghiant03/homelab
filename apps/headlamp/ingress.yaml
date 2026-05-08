@@ -1,0 +1,34 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: headlamp
+  namespace: kube-system
+spec:
+  rules:
+  - host: headlamp.home.arpa
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: headlamp
+            port:
+              number: 80
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: headlamp-tailscale
+  namespace: kube-system
+spec:
+  ingressClassName: tailscale
+  tls:
+    - hosts:
+        - headlamp
+  defaultBackend:
+    service:
+      name: headlamp
+      port:
+        number: 80
+

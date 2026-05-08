@@ -1,0 +1,11 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: headlamp
+  namespace: kube-system
+spec:
+  ports:
+    - port: 80
+      targetPort: 4466
+  selector:
+    app.kubernetes.io/name: headlamp
