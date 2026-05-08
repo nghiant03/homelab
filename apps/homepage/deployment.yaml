@@ -20,6 +20,9 @@ spec:
           env:
             - name: HOMEPAGE_ALLOWED_HOSTS
               value: "homepage.tail36f6a3.ts.net,homepage.home.arpa"
+          envFrom:
+            - secretRef:
+                name: homepage-secrets
           ports:
             - name: http
               containerPort: 3000
