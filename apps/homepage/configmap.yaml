@@ -32,4 +32,12 @@ data:
           memory: true
 
   services.yaml: |
-    []
+    - Network:
+        - Tailscale:
+            icon: tailscale.png
+            href: https://login.tailscale.com/admin/machines
+            description: Tailnet device status
+            widget:
+              type: tailscale
+              deviceid: your-device-id-CNTRL
+              key: "{{HOMEPAGE_VAR_TAILSCALE_KEY}}"
