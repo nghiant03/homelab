@@ -39,5 +39,5 @@ data:
             description: Tailnet device status
             widget:
               type: tailscale
-              deviceid: your-device-id-CNTRL
+              deviceid: n3c6UhXsgY11CNTRL
               key: "{{HOMEPAGE_VAR_TAILSCALE_KEY}}"
