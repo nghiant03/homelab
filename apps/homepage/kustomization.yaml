@@ -9,3 +9,4 @@ resources:
   - service.yaml
   - ingress.yaml
   - configmap.yaml
+  - secret-key.yaml
