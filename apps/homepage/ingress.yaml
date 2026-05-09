@@ -1,24 +1,6 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: homepage-traefik
-  namespace: homepage
-spec:
-  rules:
-    - host: homepage.home.arpa
-      http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: homepage
-                port:
-                  number: 3000
----
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
   name: homepage-tailscale
   namespace: homepage
 spec:
