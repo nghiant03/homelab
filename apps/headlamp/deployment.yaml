@@ -13,6 +13,22 @@ spec:
       labels:
         app.kubernetes.io/name: headlamp
     spec:
+      initContainers:
+        - name: headlamp-flux-plugin-install
+          image: ghcr.io/headlamp-k8s/headlamp-plugin-flux:v0.6.0
+          command:
+            - /bin/sh
+            - -c
+          args:
+            - |
+              set -e
+              mkdir -p /headlamp/plugins
+              rm -rf /headlamp/plugins/flux
+              cp -r /plugins/flux /headlamp/plugins/
+          volumeMounts:
+            - name: headlamp-plugins
+              mountPath: /headlamp/plugins
+
       containers:
         - name: headlamp
           image: ghcr.io/headlamp-k8s/headlamp:latest
@@ -49,5 +65,12 @@ spec:
               port: 4466
             initialDelaySeconds: 30
             timeoutSeconds: 30
+          volumeMounts:
+            - mountPath: /headlamp/plugins
+              name: headlamp-plugins
+
+      volumes:
+        - name: headlamp-plugins
+          emptyDir: {}
       nodeSelector:
         'kubernetes.io/os': linux
