@@ -1,12 +1,61 @@
 apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: headlamp-operator
+rules:
+  - apiGroups: ["", "apps", "batch", "networking.k8s.io", "autoscaling"]
+    resources:
+      - pods
+      - pods/log
+      - services
+      - endpoints
+      - persistentvolumeclaims
+      - configmaps
+      - events
+      - namespaces
+      - nodes
+      - deployments
+      - daemonsets
+      - statefulsets
+      - replicasets
+      - jobs
+      - cronjobs
+      - ingresses
+      - networkpolicies
+      - horizontalpodautoscalers
+    verbs: ["get", "list", "watch"]
+  - apiGroups: ["apps"]
+    resources:
+      - deployments
+      - daemonsets
+      - statefulsets
+      - replicasets
+    verbs: ["create", "update", "patch", "delete"]
+  - apiGroups: ["batch"]
+    resources:
+      - jobs
+      - cronjobs
+    verbs: ["create", "update", "patch", "delete"]
+  - apiGroups: [""]
+    resources:
+      - pods
+    verbs: ["delete"]
+  - apiGroups: ["apps"]
+    resources:
+      - deployments/scale
+      - statefulsets/scale
+      - replicasets/scale
+    verbs: ["get", "update", "patch"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
-  name: headlamp-admin
+  name: headlamp-operator
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: cluster-admin
+  name: headlamp-operator
 subjects:
 - kind: ServiceAccount
-  name: headlamp-admin
+  name: headlamp-operator
   namespace: kube-system
