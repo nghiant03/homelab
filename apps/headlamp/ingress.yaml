@@ -8,8 +8,6 @@ metadata:
     gethomepage.dev/name: Headlamp
     gethomepage.dev/group: Kubernetes
     gethomepage.dev/icon: headlamp.png
-    gethomepage.dev/href: "https://headlamp.tail36f6a3.ts.net/"
-    gethomepage.dev/siteMonitor: "http://headlamp.kube-system.svc.cluster.local"
     gethomepage.dev/pod-selector: "app.kubernetes.io/name=headlamp"
 spec:
   ingressClassName: tailscale
