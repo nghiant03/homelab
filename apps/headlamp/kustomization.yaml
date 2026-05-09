@@ -3,7 +3,7 @@ kind: Kustomization
 
 resources:
   - ingress.yaml
-  - secret-admin-token.yaml
+  - secret-operator-token.yaml
   - service.yaml
   - service-account.yaml
   - deployment.yaml
