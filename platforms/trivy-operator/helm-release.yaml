@@ -12,7 +12,7 @@ spec:
       sourceRef:
         kind: HelmRepository
         name: aqua
-        namespace: trivy
+        namespace: trivy-system
       interval: 24h
 
   install:
