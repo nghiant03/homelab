@@ -8,5 +8,5 @@ resources:
   - rbac.yaml
   - service.yaml
   - ingress.yaml
-  - configmap.yaml
+  - config-map.yaml
   - secret-key.yaml
