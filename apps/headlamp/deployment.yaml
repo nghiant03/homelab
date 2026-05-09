@@ -13,6 +13,8 @@ spec:
       labels:
         app.kubernetes.io/name: headlamp
     spec:
+      serviceAccountName: headlamp-operator
+
       initContainers:
         - name: headlamp-flux-plugin-install
           image: ghcr.io/headlamp-k8s/headlamp-plugin-flux:v0.6.0
