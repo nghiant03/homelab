@@ -11,7 +11,7 @@ data:
   settings.yaml: |
     title: Homelab
     theme: dark
-    color: slate
+    color: neutral
 
   custom.css: ""
   custom.js: ""
