@@ -3,7 +3,7 @@ kind: ClusterRole
 metadata:
   name: headlamp-operator
 rules:
-  - apiGroups: ["", "apps", "batch", "networking.k8s.io", "autoscaling"]
+  - apiGroups: [""]
     resources:
       - pods
       - pods/log
@@ -14,15 +14,32 @@ rules:
       - events
       - namespaces
       - nodes
+    verbs: ["get", "list", "watch"]
+  - apiGroups: ["apps"]
+    resources:
       - deployments
       - daemonsets
       - statefulsets
       - replicasets
+    verbs: ["get", "list", "watch"]
+  - apiGroups: ["batch"]
+    resources:
       - jobs
       - cronjobs
+    verbs: ["get", "list", "watch"]
+  - apiGroups: ["networking.k8s.io"]
+    resources:
       - ingresses
       - networkpolicies
+    verbs: ["get", "list", "watch"]
+  - apiGroups: ["autoscaling"]
+    resources:
       - horizontalpodautoscalers
+    verbs: ["get", "list", "watch"]
+  - apiGroups: ["metrics.k8s.io"]
+    resources:
+      - pods
+      - nodes
     verbs: ["get", "list", "watch"]
   - apiGroups: ["apps"]
     resources:
@@ -84,6 +101,6 @@ roleRef:
   kind: ClusterRole
   name: headlamp-operator
 subjects:
-- kind: ServiceAccount
-  name: headlamp-operator
-  namespace: kube-system
+  - kind: ServiceAccount
+    name: headlamp-operator
+    namespace: kube-system
