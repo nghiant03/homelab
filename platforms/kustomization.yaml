@@ -5,4 +5,5 @@ resources:
   - soft-serve
   - tailscale-operator
   - trivy-operator
+  - zot-registry
   - app-kustomization.yaml
