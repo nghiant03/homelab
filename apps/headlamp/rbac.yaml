@@ -41,10 +41,6 @@ rules:
       - pods
       - nodes
     verbs: ["get", "list", "watch"]
-  - apiGroups: ["apiextensions.k8s.io"]
-    resources:
-      - customresourcedefinitions
-    verbs: ["get", "list", "watch"]
   - apiGroups: ["apps"]
     resources:
       - deployments
@@ -67,6 +63,11 @@ rules:
       - statefulsets/scale
       - replicasets/scale
     verbs: ["get", "update", "patch"]
+
+  - apiGroups: ["apiextensions.k8s.io"]
+    resources:
+      - customresourcedefinitions
+    verbs: ["get", "list", "watch"]
   - apiGroups: ["source.toolkit.fluxcd.io"]
     resources:
       - gitrepositories
@@ -94,6 +95,19 @@ rules:
       - alerts
       - providers
       - receivers
+    verbs: ["get", "list", "watch"]
+  - apiGroups: ["aquasecurity.github.io"]
+    resources:
+      - vulnerabilityreports
+      - configauditreports
+      - exposedsecretreports
+      - rbacassessmentreports
+      - infraassessmentreports
+      - sbomreports
+      - clustercompliancereports
+      - clustervulnerabilityreports
+      - clusterrbacassessmentreports
+      - clusterinfraassessmentreports
     verbs: ["get", "list", "watch"]
 ---
 apiVersion: rbac.authorization.k8s.io/v1
