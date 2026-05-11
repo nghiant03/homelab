@@ -31,6 +31,19 @@ spec:
             - name: headlamp-plugins
               mountPath: /headlamp/plugins
 
+        - name: headlamp-trivy-plugin-install
+          image: ghcr.io/kubebeam/trivy-headlamp-plugin:latest
+          command:
+            - /bin/sh
+            - -c
+          args: 
+            - |
+              mkdir -p /headlamp/plugins
+              cp -r /plugins/* /headlamp/plugins/
+          volumeMounts:
+            - name: headlamp-plugins
+              mountPath: /headlamp/plugins
+
       containers:
         - name: headlamp
           image: ghcr.io/headlamp-k8s/headlamp:latest
