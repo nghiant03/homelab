@@ -5,6 +5,6 @@ resources:
   - kuberay-operator
   - soft-serve
   - tailscale-operator
-  - trivy-operator
+  - kubescape-operator
   - zot-registry
   - app-kustomization.yaml

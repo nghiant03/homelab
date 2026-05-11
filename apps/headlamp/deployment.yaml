@@ -31,8 +31,8 @@ spec:
             - name: headlamp-plugins
               mountPath: /headlamp/plugins
 
-        - name: headlamp-trivy-plugin-install
-          image: ghcr.io/kubebeam/trivy-headlamp-plugin:latest
+        - name: headlamp-kubescape-plugin-install
+          image: quay.io/kubescape/headlamp-plugin:v0.11.0
           command:
             - /bin/sh
             - -c

@@ -1,0 +1,37 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: kubescape-operator
+  namespace: kubescape-system
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: kubescape-operator
+      version: "1.30.7"
+      sourceRef:
+        kind: HelmRepository
+        name: kubescape
+        namespace: kubescape-system
+      interval: 24h
+
+  install:
+    createNamespace: true
+    remediation:
+      retries: 3
+
+  upgrade:
+    remediation:
+      retries: 3
+
+  values:
+    clusterName: homelab
+
+    capabilities:
+      operator: enable
+      configurationScan: enable
+      continuousScan: disable
+      nodeScan: enable
+
+      vulnerabilityScan: enable
+      relevancy: disable
