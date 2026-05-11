@@ -12,7 +12,7 @@ spec:
       sourceRef:
         kind: HelmRepository
         name: kuberay
-        namespace: flux-system
+        namespace: kuberay-system
       interval: 12h
 
   install:
