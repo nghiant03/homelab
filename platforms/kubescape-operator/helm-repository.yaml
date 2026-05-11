@@ -5,4 +5,4 @@ metadata:
   namespace: kubescape-system
 spec:
   interval: 24h
-  url: https://aquasecurity.github.io/helm-charts/
+  url: https://kubescape.github.io/helm-charts/
