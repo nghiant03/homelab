@@ -26,6 +26,7 @@ spec:
 
   values:
     clusterName: homelab
+    ksNamespace: kubescape-system
 
     capabilities:
       operator: enable
