@@ -1,0 +1,15 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: gitea-tailscale
+  namespace: gitea
+spec:
+  ingressClassName: tailscale
+  tls:
+    - hosts:
+        - gitea
+  defaultBackend:
+    service:
+      name: gitea
+      port:
+        number: 3000

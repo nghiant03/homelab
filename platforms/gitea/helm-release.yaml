@@ -72,13 +72,4 @@ spec:
         type: ClusterIP
 
     ingress:
-      enabled: true
-      className: tailscale
-      hosts:
-        - host: gitea
-          paths:
-            - path: /
-              pathType: Prefix
-      tls:
-        - hosts:
-            - gitea
+      enabled: false
