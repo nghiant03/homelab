@@ -36,9 +36,9 @@ spec:
     gitea:
       config:
         server:
-          DOMAIN: git.tail36f6a3.ts.net
-          ROOT_URL: https://git.tail36f6a3.ts.net/
-          SSH_DOMAIN: git.tail36f6a3.ts.net
+          DOMAIN: gitea.tail36f6a3.ts.net
+          ROOT_URL: https://gitea.tail36f6a3.ts.net/
+          SSH_DOMAIN: gitea.tail36f6a3.ts.net
           SSH_PORT: 2222
           START_SSH_SERVER: true
 
