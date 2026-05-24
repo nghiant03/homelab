@@ -35,6 +35,12 @@ spec:
         domain: tail36f6a3.ts.net
         https: true
 
+      gatewayApi:
+        enabled: false
+        configureCertmanager: false
+        installEnvoy: false
+
+
       ingress:
         enabled: true
         class: tailscale
@@ -97,10 +103,4 @@ spec:
     nginx-ingress:
       enabled: false
 
-    certmanager:
-      install: false
-
     installCertmanager: false
-
-    certmanager-issuer:
-      email: "nghiant@mailbox.org"
