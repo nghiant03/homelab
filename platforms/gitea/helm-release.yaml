@@ -64,14 +64,5 @@ spec:
           accessModes:
             - ReadWriteOnce
 
-    service:
-      http:
-        type: ClusterIP
-        port: 3000
-        clusterIP: ""
-
-      ssh:
-        type: ClusterIP
-
     ingress:
       enabled: false
