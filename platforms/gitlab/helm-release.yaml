@@ -19,13 +19,13 @@ spec:
       interval: 1h
 
   install:
-    timeout: 20m
+    timeout: 120m
     createNamespace: true
     remediation:
       retries: 3
 
   upgrade:
-    timeout: 20m
+    timeout: 120m
     remediation:
       retries: 3
 
