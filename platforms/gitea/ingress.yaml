@@ -8,8 +8,14 @@ spec:
   tls:
     - hosts:
         - gitea
-  defaultBackend:
-    service:
-      name: gitea-http
-      port:
-        number: 3000
+  rules:
+    - host: gitea
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: gitea-http
+                port:
+                  number: 3000
