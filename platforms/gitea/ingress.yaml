@@ -10,6 +10,6 @@ spec:
         - gitea
   defaultBackend:
     service:
-      name: gitea
+      name: gitea-http
       port:
         number: 3000
