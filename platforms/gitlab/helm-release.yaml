@@ -41,6 +41,25 @@ spec:
         tls:
           enabled: true
 
+      appConfig:
+        object_store:
+          enabled: true
+          proxy_download: true
+          connection:
+            secret: gitlab-rails-object-storage
+            key: connection
+
+        artifacts:
+          bucket: gitlab-artifacts
+        lfs:
+          bucket: gitlab-lfs
+        uploads:
+          bucket: gitlab-uploads
+        packages:
+          bucket: gitlab-packages
+
+      registry:
+        bucket: gitlab-registry
 
       psql:
         host: ep-delicate-breeze-aqkuxwuy.c-8.us-east-1.aws.neon.tech
@@ -48,7 +67,7 @@ spec:
         database: neondb
         username: neondb-owner
         password:
-          secret: gitlab-password
+          secret: gitlab-database
           key: psql_password
 
       redis:
@@ -57,8 +76,21 @@ spec:
         scheme: rediss
         auth:
           enabled: true
-          secret: gitlab-password
+          secret: gitlab-database
           key: redis_password
+
+    registry:
+      storage:
+        secret: gitlab-registry-storage
+        key: config
+
+    gitlab:
+      toolbox:
+        backups:
+          objectStorage:
+            config:
+              secret: gitlab-backup-storage
+              key: config
 
     nginx-ingress:
       enabled: false
