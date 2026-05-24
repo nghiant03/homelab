@@ -79,6 +79,19 @@ spec:
           secret: gitlab-database
           key: redis_password
 
+    registry:
+      storage:
+        secret: gitlab-registry-storage
+        key: config
+
+    gitlab:
+      toolbox:
+        backups:
+          objectStorage:
+            config:
+              secret: gitlab-backup-storage
+              key: config
+
     nginx-ingress:
       enabled: false
 
