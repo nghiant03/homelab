@@ -4,7 +4,7 @@ resources:
   - flux-system
   - kuberay-operator
   - soft-serve
-  - gitea
+  - gitlab
   - tailscale-operator
   - kubescape-operator
   - zot-registry
