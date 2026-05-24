@@ -52,14 +52,20 @@ spec:
     certmanager-issuer:
       email: "nghiant@mailbox.org"
 
-    postgresql:
-      install: true
+    psql:
+      host: ep-delicate-breeze-aqkuxwuy.c-8.us-east-1.aws.neon.tech
+      port: 5432
+      database: neondb
+      role: neondb-owner
+      password:
+        secret: gitlab-password
+        key: psql_password
 
     redis:
-      install: true
+      host: exact-flamingo-135298.upstash.io
+      port: 6379
+      auth:
+        enabled: true
+        secret: gitlab-password
+        key: redis_password
 
-    prometheus:
-      install: false
-
-    gitlab-runner:
-      install: false
