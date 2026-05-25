@@ -70,10 +70,10 @@ spec:
         bucket: gitlab-registry
 
       psql:
-        host: db.jptejvkscahdqpacccch.supabase.co
+        host: aws-1-ap-northeast-1.pooler.supabase.com
         port: 5432
         database: postgres
-        username: postgres
+        username: postgres.jptejvkscahdqpacccch
         password:
           secret: gitlab-database
           key: psql_password
