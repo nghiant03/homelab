@@ -47,7 +47,7 @@ spec:
         provider: ""
         configureCertmanager: false
         tls:
-          enabled: true
+          enabled: false
 
       appConfig:
         object_store:
