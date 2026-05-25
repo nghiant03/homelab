@@ -11,7 +11,7 @@ spec:
     - name: flux-system
   sourceRef:
     kind: GitRepository
-    name: flux-system
+    name: infrastructures
   decryption:
     provider: sops
     secretRef:
