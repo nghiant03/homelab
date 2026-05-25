@@ -8,10 +8,10 @@ spec:
   path: ./platforms
   prune: true
   dependsOn:
-    - name: flux-system
+    - name: infrastructures
   sourceRef:
     kind: GitRepository
-    name: infrastructures
+    name: flux-system
   decryption:
     provider: sops
     secretRef:
