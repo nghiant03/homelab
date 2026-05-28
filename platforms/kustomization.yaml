@@ -5,7 +5,6 @@ resources:
   - kuberay-operator
   - soft-serve
   - gitlab
-  - cloudnative-pg
   - tailscale-operator
   - kubescape-operator
   - zot-registry
