@@ -70,13 +70,13 @@ spec:
         bucket: gitlab-registry
 
       psql:
-        host: gitlab-database-rw.gitlab.svc.cluster.local
+        host: aws-1-ap-northeast-1.pooler.supabase.com
         port: 5432
-        database: gitlabhq_production
-        username: gitlab
+        database: postgres
+        username: postgres.jptejvkscahdqpacccch
         password:
-          secret: gitlab-database-user
-          key: password
+          secret: gitlab-database
+          key: psql_password
 
       redis:
         host: exact-flamingo-135298.upstash.io
@@ -84,7 +84,7 @@ spec:
         scheme: rediss
         auth:
           enabled: true
-          secret: gitlab-cache-storage
+          secret: gitlab-database
           key: redis_password
 
     registry:
