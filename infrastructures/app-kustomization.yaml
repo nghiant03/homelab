@@ -8,7 +8,7 @@ spec:
   path: ./apps
   prune: true
   dependsOn:
-    - name: platforms
+    - name: flux-system
   sourceRef:
     kind: GitRepository
     name: flux-system
