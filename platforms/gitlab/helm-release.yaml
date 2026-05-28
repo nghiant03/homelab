@@ -18,48 +18,48 @@ spec:
         namespace: gitlab
       interval: 1h
 
-  install:
-    createNamespace: true
-    remediation:
-      retries: 3
+      install:
+        createNamespace: true
+        remediation:
+          retries: 3
 
-  upgrade:
-    remediation:
-      retries: 3
+      upgrade:
+        remediation:
+          retries: 3
 
-  values:
-    global:
-      hosts:
-        domain: tail36f6a3.ts.net
-        https: true
+      values:
+        global:
+          hosts:
+            domain: tail36f6a3.ts.net
+            https: true
 
-      ingress:
-        enabled: true
-        class: tailscale
-        provider: ""
-        configureCertmanager: false
-        tls:
-          enabled: true
+          ingress:
+            enabled: true
+            class: tailscale
+            provider: ""
+            configureCertmanager: false
+            tls:
+              enabled: true
 
-    nginx-ingress:
-      enabled: false
+        nginx-ingress:
+          enabled: false
 
-    certmanager:
-      install: false
+        certmanager:
+          install: false
 
-    installCertmanager: false
+        installCertmanager: false
 
-    certmanager-issuer:
-      email: ""
+        certmanager-issuer:
+          email: ""
 
-    postgresql:
-      install: true
+        postgresql:
+          install: true
 
-    redis:
-      install: true
+        redis:
+          install: true
 
-    prometheus:
-      install: false
+        prometheus:
+          install: false
 
-    gitlab-runner:
-      install: false
+        gitlab-runner:
+          install: false
