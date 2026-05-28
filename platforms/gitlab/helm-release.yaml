@@ -50,7 +50,7 @@ spec:
     installCertmanager: false
 
     certmanager-issuer:
-      email: "nghiant@mailbox.org"
+      email: ""
 
     postgresql:
       install: true
