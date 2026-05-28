@@ -73,7 +73,7 @@ spec:
         host: ep-delicate-breeze-aqkuxwuy.c-8.us-east-1.aws.neon.tech
         port: 5432
         database: neondb
-        username: neondb_owner
+        username: neondb-owner
         password:
           secret: gitlab-database
           key: psql_password
