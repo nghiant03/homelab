@@ -27,7 +27,9 @@ spec:
   upgrade:
     timeout: 120m
     remediation:
-      retries: 0
+      retries: 1
+      remediateLastFailure: true
+      strategy: uninstall
 
   values:
     global:
