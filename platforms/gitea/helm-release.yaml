@@ -1,0 +1,68 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: gitea
+  namespace: gitea
+spec:
+  interval: 30m
+  releaseName: gitea
+  targetNamespace: gitea
+
+  chart:
+    spec:
+      chart: gitea
+      version: "12.5.3"
+      sourceRef:
+        kind: HelmRepository
+        name: gitea
+        namespace: gitea
+      interval: 24h
+
+  install:
+    createNamespace: false
+    remediation:
+      retries: 3
+
+  upgrade:
+    remediation:
+      retries: 3
+
+  valuesFrom:
+    - kind: Secret
+      name: gitea-values
+      valuesKey: values.yaml
+
+  values:
+    gitea:
+      config:
+        server:
+          DOMAIN: gitea.tail36f6a3.ts.net
+          ROOT_URL: https://gitea.tail36f6a3.ts.net/
+          SSH_DOMAIN: gitea.tail36f6a3.ts.net
+          SSH_PORT: 2222
+          START_SSH_SERVER: true
+
+        service:
+          DISABLE_REGISTRATION: true
+
+        repository:
+          DEFAULT_BRANCH: main
+
+    persistence:
+      enabled: true
+      size: 20Gi
+
+    postgresql-ha:
+      enabled: false
+
+    postgresql:
+      enabled: true
+      primary:
+        persistence:
+          enabled: true
+          size: 10Gi
+          accessModes:
+            - ReadWriteOnce
+
+    ingress:
+      enabled: false
