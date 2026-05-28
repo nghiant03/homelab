@@ -46,7 +46,7 @@ spec:
           enabled: true
           proxy_download: true
           connection:
-            secret: gitlab-object-storage
+            secret: gitlab-rails-object-storage
             key: connection
 
         artifacts:
@@ -78,6 +78,19 @@ spec:
           enabled: true
           secret: gitlab-database
           key: redis_password
+
+    registry:
+      storage:
+        secret: gitlab-registry-storage
+        key: config
+
+    gitlab:
+      toolbox:
+        backups:
+          objectStorage:
+            config:
+              secret: gitlab-backup-storage
+              key: config
 
     nginx-ingress:
       enabled: false
