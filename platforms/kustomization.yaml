@@ -1,7 +1,12 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
+  - flux-system
   - kuberay-operator
   - soft-serve
   - gitlab
+  - cloudnative-pg
+  - tailscale-operator
   - kubescape-operator
+  - zot-registry
+  - app-kustomization.yaml
