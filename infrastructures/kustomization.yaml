@@ -3,4 +3,3 @@ kind: Kustomization
 resources:
   - cloudnative-pg
   - tailscale-operator
-  - longhorn
