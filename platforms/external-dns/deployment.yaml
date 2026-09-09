@@ -36,7 +36,7 @@ spec:
 
             - --policy=sync
 
-            - --rfc2136-host=192.168.1.10
+            - --rfc2136-host=100.77.78.126
             - --rfc2136-port=53
             - --rfc2136-zone=home.arpa
             - --rfc2136-tsig-secret-alg=hmac-sha256

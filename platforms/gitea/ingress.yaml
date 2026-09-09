@@ -7,9 +7,9 @@ spec:
   ingressClassName: tailscale
   tls:
     - hosts:
-        - gitea
+        - gitea.home.arpa
   rules:
-    - host: gitea
+    - host: gitea.home.arpa
       http:
         paths:
           - path: /
