@@ -16,10 +16,10 @@ Kubernetes GitOps homelab repo: plain YAML manifests and Flux `HelmRelease`/`Hel
 - `platforms/flux-system/` — Flux bootstrap. `gotk-components.yaml` and `gotk-sync.yaml` are generated; regenerate with Flux tooling, don't hand-edit.
 - `platforms/tailscale-operator/` — Tailscale operator, CRDs (in `crd/` sub-root), RBAC, and the `tailscale` `IngressClass` used by other components.
 - `platforms/soft-serve/` — Soft Serve git server; still the Flux git remote (part of the GitOps loop) even though Gitea also exists.
-- `platforms/gitea/` — Flux `HelmRelease` (chart `gitea`, pinned version) + custom Tailscale `Ingress`. Chart ingress is disabled; the repo defines its own `gitea-http` ClusterIP Service + Ingress. Sensitive chart values come from the SOPS-encrypted `gitea-values` Secret via `valuesFrom`.
+- `platforms/gitea/` — Flux `HelmRelease` (chart `gitea`, pinned version) + custom Tailscale `Ingress`. Chart ingress is disabled; the repo defines its own `gitea-tailscale` ClusterIP Service + Ingress (do NOT name it `gitea-http`: the chart always renders its own headless `gitea-http` with `clusterIP: None`, and a name collision breaks the Tailscale ingress backend). Sensitive chart values come from the SOPS-encrypted `gitea-values` Secret via `valuesFrom`.
 - `platforms/kuberay-operator/`, `platforms/kubescape-operator/` — Helm-based components: each is just `namespace.yaml` + `helm-repository.yaml` + `helm-release.yaml` with a pinned chart version.
-- `platforms/external-dns/` — RFC2136 provider against `192.168.1.10`, manages the `home.arpa` zone from Service/Ingress sources (`--domain-filter=home.arpa`, `--policy=sync`). TSIG keys come from the SOPS Secret `external-dns-secret`.
-- `platforms/coredns/` — only a `coredns-custom` ConfigMap in `kube-system` forwarding `home.arpa` to `100.77.78.126`; it relies on the cluster CoreDNS importing `coredns-custom`, there is no CoreDNS deployment here.
+- `platforms/external-dns/` — RFC2136 provider against Technitium at `100.114.255.114`, manages the `home.arpa` zone from Service/Ingress sources (`--domain-filter=home.arpa`, `--policy=sync`). TSIG keys come from the SOPS Secret `external-dns-secret`. The Technitium zone must allow AXFR zone transfers and dynamic updates for the `external-dns` TSIG key (security policy domain `*.home.arpa`, record types `ANY` — external-dns also writes TXT registry records).
+- `platforms/coredns/` — only a `coredns-custom` ConfigMap in `kube-system` forwarding `home.arpa` to `100.114.255.114`; it relies on the cluster CoreDNS importing `coredns-custom`, there is no CoreDNS deployment here.
 - `apps/homepage/` — Homepage dashboard. Tailscale-only ingress. Ingresses of other components carry `gethomepage.dev/*` annotations for discovery (see `apps/headlamp/ingress.yaml`); keep them when adding ingresses.
 - `apps/headlamp/` — Headlamp runs in `kube-system` (deliberately no `namespace.yaml`); Flux/kubescape plugins are installed via initContainers into an `emptyDir`.
 
@@ -57,6 +57,7 @@ Never replace `ENC[...]` values with plaintext. Edit encrypted files through SOP
 - LAN hosts use `*.home.arpa` (records created by external-dns); Tailscale hosts use the short name with `ingressClassName: tailscale` + `tls.hosts` (e.g. `homepage`, `headlamp`, `gitea`).
 - Soft Serve instead uses `type: LoadBalancer` + `loadBalancerClass: tailscale` for SSH.
 - The `tailscale` IngressClass comes from `platforms/tailscale-operator/` — it must stay applied for any Tailscale ingress/LB to work.
+- external-dns publishes Tailscale-ingress hosts as CNAMEs to the proxy's `ts.net` name. Technitium has a conditional forwarder zone `tail36f6a3.ts.net` → `100.100.100.100` (DNSSEC validation disabled; quad100's answers are unsigned) so these CNAMEs resolve end-to-end — keep it while any `*.home.arpa` record points at a Tailscale ingress.
 
 ## Gotchas
 

@@ -5,9 +5,6 @@ metadata:
   namespace: gitea
 spec:
   ingressClassName: tailscale
-  tls:
-    - hosts:
-        - gitea.home.arpa
   rules:
     - host: gitea.home.arpa
       http:
