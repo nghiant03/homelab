@@ -37,7 +37,7 @@ spec:
       config:
         server:
           DOMAIN: gitea.home.arpa
-          ROOT_URL: https://gitea.home.arpa/
+          ROOT_URL: http://gitea.home.arpa/
           SSH_DOMAIN: gitea.home.arpa
           SSH_PORT: 2222
           START_SSH_SERVER: true
