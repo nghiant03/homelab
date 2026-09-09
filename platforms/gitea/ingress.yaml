@@ -4,7 +4,7 @@ metadata:
   name: gitea-tailscale
   namespace: gitea
   annotations:
-    external-dns.alpha.kubernetes.io/hostname: gitea.home.arpa
+    external-dns.kubernetes.io/hostname: gitea.home.arpa
 spec:
   ingressClassName: tailscale
   defaultBackend:

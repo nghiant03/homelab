@@ -58,6 +58,7 @@ Never replace `ENC[...]` values with plaintext. Edit encrypted files through SOP
 - Soft Serve instead uses `type: LoadBalancer` + `loadBalancerClass: tailscale` for SSH.
 - The `tailscale` IngressClass comes from `platforms/tailscale-operator/` — it must stay applied for any Tailscale ingress/LB to work.
 - external-dns publishes Tailscale-ingress hosts as CNAMEs to the proxy's `ts.net` name. Technitium has a conditional forwarder zone `tail36f6a3.ts.net` → `100.100.100.100` (DNSSEC validation disabled; quad100's answers are unsigned) so these CNAMEs resolve end-to-end — keep it while any `*.home.arpa` record points at a Tailscale ingress.
+- The tailscale operator only supports `ts.net` machine names in ingress rules — a `*.home.arpa` rule host is ignored ("unsupported") and the proxy serves nothing. To expose a Tailscale ingress as `*.home.arpa`, use `defaultBackend` (no rules) and set `external-dns.kubernetes.io/hostname: <name>.home.arpa` (see `platforms/gitea/ingress.yaml`). Note the prefix: external-dns v0.22+ uses `external-dns.kubernetes.io/`; the legacy `external-dns.alpha.kubernetes.io/` annotations are ignored.
 
 ## Gotchas
 
