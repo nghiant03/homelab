@@ -3,6 +3,7 @@ kind: Kustomization
 resources:
   - connector.yaml
   - dns-config.yaml
+  - peer-relay.yaml
   - proxy-class.yaml
   - proxy-group-policy.yaml
   - proxy-group.yaml
