@@ -5,4 +5,4 @@ metadata:
   namespace: kube-system
 data:
   home-arpa.override: |
-    forward home.arpa 100.77.78.126
+    forward home.arpa 100.114.255.114
