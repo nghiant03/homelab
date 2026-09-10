@@ -3,13 +3,17 @@ kind: Service
 metadata:
   name: gitea-tailscale
   namespace: gitea
+  annotations:
+    tailscale.com/hostname: gitea
+    external-dns.kubernetes.io/hostname: gitea.home.arpa
 spec:
-  type: ClusterIP
+  type: LoadBalancer
+  loadBalancerClass: tailscale
   selector:
     app.kubernetes.io/instance: gitea
     app.kubernetes.io/name: gitea
   ports:
     - name: http
-      port: 3000
+      port: 80
       targetPort: 3000
       protocol: TCP
