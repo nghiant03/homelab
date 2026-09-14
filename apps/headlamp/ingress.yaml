@@ -1,23 +1,31 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: headlamp-tailscale
+  name: headlamp
   namespace: kube-system
   annotations:
+    cert-manager.io/cluster-issuer: homelab-ca
     gethomepage.dev/enabled: "true"
     gethomepage.dev/name: Headlamp
     gethomepage.dev/group: Kubernetes
     gethomepage.dev/icon: headlamp.png
-    gethomepage.dev/href: "https://homepage.tail36f6a3.ts.net/"
+    gethomepage.dev/href: "https://headlamp.home.arpa/"
     gethomepage.dev/pod-selector: "app.kubernetes.io/name=headlamp"
 spec:
-  ingressClassName: tailscale
+  ingressClassName: traefik
   tls:
     - hosts:
-        - headlamp
-  defaultBackend:
-    service:
-      name: headlamp
-      port:
-        number: 80
+        - headlamp.home.arpa
+      secretName: headlamp-tls
+  rules:
+    - host: headlamp.home.arpa
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: headlamp
+                port:
+                  number: 80
 

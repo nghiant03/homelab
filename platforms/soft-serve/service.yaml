@@ -28,6 +28,7 @@ metadata:
   namespace: git
   annotations:
     tailscale.com/hostname: soft-serve
+    external-dns.kubernetes.io/hostname: soft-serve.home.arpa
 spec:
   type: LoadBalancer
   loadBalancerClass: tailscale

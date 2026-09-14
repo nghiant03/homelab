@@ -1,15 +1,24 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: homepage-tailscale
+  name: homepage
   namespace: homepage
+  annotations:
+    cert-manager.io/cluster-issuer: homelab-ca
 spec:
-  ingressClassName: tailscale
+  ingressClassName: traefik
   tls:
     - hosts:
-        - homepage
-  defaultBackend:
-    service:
-      name: homepage
-      port:
-        number: 3000
+        - homepage.home.arpa
+      secretName: homepage-tls
+  rules:
+    - host: homepage.home.arpa
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: homepage
+                port:
+                  number: 3000
