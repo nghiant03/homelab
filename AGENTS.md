@@ -6,7 +6,7 @@ Kubernetes GitOps homelab repo: plain YAML manifests and Flux `HelmRelease`/`Hel
 
 ## Flux control flow
 
-- `platforms/flux-system/gotk-sync.yaml` (generated, `DO NOT EDIT`): `GitRepository` points at `ssh://git@gitea.home.arpa/homelab/homelab.git` branch `main`; Flux `Kustomization` `flux-system` applies path `./platforms` with `prune: true`.
+- `platforms/flux-system/gotk-sync.yaml` (generated, `DO NOT EDIT`): `GitRepository` points at `ssh://git@gitea-ssh.gitea.svc.cluster.local:22/homelab/homelab.git` branch `main` — in-cluster DNS so the GitOps loop has no dependency on external DNS or Tailscale. Flux `Kustomization` `flux-system` applies path `./platforms` with `prune: true`.
 - `platforms/kustomization.yaml` is the aggregator for that path: it lists every platform directory plus `app-kustomization.yaml`.
 - `platforms/app-kustomization.yaml` is a second Flux `Kustomization` (`apps`, path `./apps`, `dependsOn: flux-system`). Apps ARE deployed by Flux — adding a directory under `apps/` plus an entry in `apps/kustomization.yaml` is sufficient.
 - Both Flux Kustomizations set `decryption.provider: sops` with `secretRef: sops-age` — SOPS Secrets are decrypted cluster-side by Flux using the `sops-age` Secret in `flux-system`. Commit only `ENC[...]` ciphertext.
@@ -16,13 +16,13 @@ Kubernetes GitOps homelab repo: plain YAML manifests and Flux `HelmRelease`/`Hel
 - `platforms/flux-system/` — Flux bootstrap. `gotk-components.yaml` and `gotk-sync.yaml` are generated; regenerate with Flux tooling, don't hand-edit.
 - `platforms/tailscale-operator/` — Tailscale operator, CRDs (in `crd/` sub-root), RBAC, and the `tailscale` `IngressClass` used by other components.
 - `platforms/soft-serve/` — Soft Serve git server; legacy — the Flux git remote moved to Gitea (`gitea.home.arpa`). Kept running for its existing data.
-- `platforms/gitea/` — Flux `HelmRelease` (chart `gitea`, pinned version) + a Tailscale `LoadBalancer` Service (`gitea-tailscale`, port 80 → 3000 HTTP and port 22 → 2222 SSH, the chart's built-in SSH listen port; chart ingress disabled). Do NOT use a Tailscale `Ingress` for it: current operator versions force HTTPS:443 with certs that only exist for `*.ts.net` machine names, so a custom `home.arpa` host can never be served. The LB service carries `external-dns.kubernetes.io/hostname: gitea.home.arpa` so external-dns publishes the record automatically. Sensitive chart values come from the SOPS-encrypted `gitea-values` Secret via `valuesFrom`.
+- `platforms/gitea/` — Flux `HelmRelease` (chart `gitea`, pinned version) + a Traefik Ingress (`gitea.home.arpa`, `ingressClassName: traefik`, TLS via the `homelab-ca` ClusterIssuer; chart ingress block in `helm-release.yaml` enables it). Laptop git clone goes over HTTPS to `https://gitea.home.arpa`; the chart's built-in SSH listener serves Flux over the in-cluster service `gitea-ssh.gitea.svc.cluster.local:22`. Sensitive chart values come from the SOPS-encrypted `gitea-values` Secret via `valuesFrom`.
 - `platforms/kuberay-operator/`, `platforms/kubescape-operator/` — Helm-based components: each is just `namespace.yaml` + `helm-repository.yaml` + `helm-release.yaml` with a pinned chart version.
 - `platforms/external-dns/` — RFC2136 provider against Technitium at `100.114.255.114`, manages the `home.arpa` zone from Service/Ingress sources (`--domain-filter=home.arpa`, `--policy=sync`). TSIG keys come from the SOPS Secret `external-dns-secret`. The Technitium zone must allow AXFR zone transfers and dynamic updates for the `external-dns` TSIG key (security policy domain `*.home.arpa`, record types `ANY` — external-dns also writes TXT registry records).
 - `platforms/cert-manager/` — cert-manager v1.21.x (HelmRelease) with CRDs enabled. Uses the OCI HelmRepository `oci://quay.io/jetstack/charts`. `bootstrap.yaml` contains a SelfSigned `ClusterIssuer`, a 10-year RSA-4096 root `Certificate` (`isCA: true`, `rotationPolicy: Never`) stored in Secret `homelab-root-ca` in the `cert-manager` namespace, and the production `ClusterIssuer` `homelab-ca` (type `ca`, points at the root secret). trust-manager (`platforms/trust-manager/`) reads that same secret into a `ca-certificates.crt` Bundle in every namespace.
 - `platforms/trust-manager/` — Jetstack trust-manager HelmRelease (deploys into the `cert-manager` namespace; chart `trust-manager`). One Bundle (`homelab-trust`, API `trust.cert-manager.io/v1alpha1`) merges the root CA secret with the system default CAs and writes a `ca-certificates.crt` ConfigMap into every namespace. Use `namespaceSelector` to scope down later.
-- `platforms/coredns/` — only a `coredns-custom` ConfigMap in `kube-system` forwarding `home.arpa` to `100.114.255.114`; it relies on the cluster CoreDNS importing `coredns-custom`, there is no CoreDNS deployment here.
-- `apps/homepage/` — Homepage dashboard. Tailscale-only ingress. Ingresses of other components carry `gethomepage.dev/*` annotations for discovery (see `apps/headlamp/ingress.yaml`); keep them when adding ingresses.
+- `platforms/coredns/` — only a `coredns-custom` ConfigMap in `kube-system` forwarding `home.arpa` to `100.114.255.114`; it relies on the cluster CoreDNS importing `coredns-custom`, there is no CoreDNS deployment here. Add the new zone here when introducing a public domain later.
+- `apps/homepage/` — Homepage dashboard. Traefik Ingress on `homepage.home.arpa` (cert via `homelab-ca`). Ingresses of other components carry `gethomepage.dev/*` annotations for discovery (see `apps/headlamp/ingress.yaml`); keep them when adding ingresses.
 - `apps/headlamp/` — Headlamp runs in `kube-system` (deliberately no `namespace.yaml`); Flux/kubescape plugins are installed via initContainers into an `emptyDir`.
 
 Each immediate app/platform directory is a standalone Kustomize root with its own `kustomization.yaml`. New manifest files must be added to the directory's `resources` list or Kustomize will not render them.
@@ -56,16 +56,17 @@ Never replace `ENC[...]` values with plaintext. Edit encrypted files through SOP
 
 ## Ingress and exposure
 
-- LAN hosts use `*.home.arpa` (records created by external-dns); Tailscale hosts use the short name with `ingressClassName: tailscale` + `tls.hosts` (e.g. `homepage`, `headlamp`, `gitea`).
-- Soft Serve instead uses `type: LoadBalancer` + `loadBalancerClass: tailscale` for SSH.
-- The `tailscale` IngressClass comes from `platforms/tailscale-operator/` — it must stay applied for any Tailscale ingress/LB to work.
-- The cluster ships Traefik on ports 80/443 (e.g. k3s default). New LAN services should reach it via standard `kubernetes.io/v1` Ingress with `ingressClassName: traefik`. TLS is signed by the internal root: add the annotation `cert-manager.io/cluster-issuer: homelab-ca` and a `spec.tls[].secretName` matching the leaf (cert-manager populates it). Traefik hot-reloads the Secret on renewal so no pod restart is needed.
-- The Tailscale operator only supports `ts.net` names in ingress rules — use a `type: LoadBalancer` + `loadBalancerClass: tailscale` Service (raw TCP, any port) for `home.arpa`-named HTTPS endpoints if you need TLS at the application, with `tailscale.com/hostname` + `external-dns.kubernetes.io/hostname` annotations (current pattern: `platforms/gitea/service.yaml`). Note the prefix: external-dns v0.22+ uses `external-dns.kubernetes.io/`; the legacy `external-dns.alpha.kubernetes.io/` annotations are ignored.
-- Technitium has a conditional forwarder zone `tail36f6a3.ts.net` → `100.100.100.100` (DNSSEC validation disabled; quad100's answers are unsigned) so external-dns CNAMEs to Tailscale proxy `ts.net` names resolve end-to-end — keep it while any `*.home.arpa` record points at a Tailscale ingress.
+Tailnet is treated as LAN — every client uses Technitium (100.114.255.114, on the tailnet) for DNS and reaches the cluster by IP. So there is no separate "LAN vs tailnet" tier; everything that is reachable from tailnet devices is reachable as far as this repo is concerned. **No `*.ts.net` URLs in user-facing paths.**
+
+- All app Ingresses use `ingressClassName: traefik` against the cluster node IP, with hostnames like `app.home.arpa`. Tailnet clients (including your laptops) reach Traefik directly. external-dns (RFC2136 → Technitium) publishes the A record automatically from each Ingress (or from a `LoadBalancer` Service carrying `external-dns.kubernetes.io/hostname`).
+- TLS for `*.home.arpa` is signed by the internal root CA via the `homelab-ca` ClusterIssuer: add the annotation `cert-manager.io/cluster-issuer: homelab-ca` and a `spec.tls[].secretName` matching the leaf (cert-manager populates it). Traefik hot-reloads the Secret on renewal so no pod restart is needed.
+- Raw-TCP workloads that can't be done via HTTP Ingress (e.g. Soft‑Serve SSH on `soft-serve.home.arpa:23231`) use `type: LoadBalancer` + `loadBalancerClass: tailscale` with `tailscale.com/hostname` + `external-dns.kubernetes.io/hostname` annotations. The Tailscale operator's support for HTTP Ingress is **only** for `*.ts.net` names — keep that out of this model.
+- Note the prefix: external-dns v0.22+ uses `external-dns.kubernetes.io/`; the legacy `external-dns.alpha.kubernetes.io/` annotations are ignored.
+- Cleanup (Part A → end): once nothing references ts.net names, disable MagicDNS in the Tailscale admin console (DNS page). Global nameservers (`100.114.255.114`) and "Override DNS servers" stay on — they are independent of MagicDNS and keep Technitium resolution working. Then delete Technitium's conditional forwarder zone `tail36f6a3.ts.net` → `100.100.100.100`; it's only needed for resolving external-dns CNAMEs to Tailscale proxy `ts.net` names. `*.home.arpa` is unaffected.
 
 ## CA trust (internal root)
 
-The internal root CA (`homelab-root-ca`) is generated by cert-manager in-cluster. LAN devices must import it once to trust `*.home.arpa`:
+The internal root CA (`homelab-root-ca`) is generated by cert-manager in-cluster. Devices (Linux/macOS/Windows) must import it once to trust `*.home.arpa`:
 
 ```sh
 kubectl -n cert-manager get secret homelab-root-ca \
@@ -87,6 +88,7 @@ The root key lives only in the cluster Secret `cert-manager/homelab-root-ca`. **
 - Soft Serve depends on its PVC and `soft-serve-admin-key` Secret; data path is `SOFT_SERVE_DATA_PATH=/soft-serve`.
 - Removing a component means deleting its directory AND its entry in the parent `kustomization.yaml`; Flux `prune: true` will then delete it from the cluster.
 - cert-manager CRDs install via `crds.enabled: true` on the HelmRelease. The first Flux apply of `platforms/cert-manager/bootstrap.yaml` races CRD installation and will transiently error on the `Certificate`/`ClusterIssuer` objects — Flux retries and self-heals. Cert readiness for Traefik/ingress shims: leaf `Certificate` default is 90 days; the root is pinned to 10 years with `rotationPolicy: Never` so device trust survives.
+- Flux→Gitea SSH uses the chart's in-cluster `gitea-ssh.gitea.svc.cluster.local:22`. The `flux-system` secret's `known_hosts` must contain an entry for that host pointing at Gitea's generated SSH host key: `kubectl get secret -n gitea gitea-ssh-host-keys -o jsonpath='{.data}` (or `ssh-keyscan -p 22 gitea-ssh.gitea.svc.cluster.local` from a debug pod), then `kubectl edit secret flux-system -n flux-system` to add the line.
 
 ## Adding a new component
 
