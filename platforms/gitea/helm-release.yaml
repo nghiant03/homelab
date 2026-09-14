@@ -37,9 +37,9 @@ spec:
       config:
         server:
           DOMAIN: gitea.home.arpa
-          ROOT_URL: http://gitea.home.arpa/
+          ROOT_URL: https://gitea.home.arpa/
           SSH_DOMAIN: gitea.home.arpa
-          SSH_PORT: 2222
+          SSH_PORT: 22
           START_SSH_SERVER: true
 
         service:
@@ -51,6 +51,11 @@ spec:
     persistence:
       enabled: true
       size: 20Gi
+      storageClass: local-path
+
+    valkey-cluster:
+      persistence:
+        storageClass: local-path
 
     postgresql-ha:
       enabled: false
@@ -61,8 +66,21 @@ spec:
         persistence:
           enabled: true
           size: 10Gi
+          storageClass: local-path
           accessModes:
             - ReadWriteOnce
 
     ingress:
-      enabled: false
+      enabled: true
+      className: traefik
+      annotations:
+        cert-manager.io/cluster-issuer: homelab-ca
+      hosts:
+        - host: gitea.home.arpa
+          paths:
+            - path: /
+              pathType: Prefix
+      tls:
+        - hosts:
+            - gitea.home.arpa
+          secretName: gitea-tls
