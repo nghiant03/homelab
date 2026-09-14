@@ -11,7 +11,7 @@ spec:
     branch: main
   secretRef:
     name: flux-system
-  url: ssh://flux@soft-serve.tail36f6a3.ts.net:23231/homelab.git
+  url: ssh://git@gitea.home.arpa/homelab/homelab.git
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
