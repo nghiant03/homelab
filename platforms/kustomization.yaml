@@ -9,6 +9,7 @@ resources:
   - soft-serve
   - gitea
   - tailscale-operator
+  - traefik
   - trust-manager
   - kubescape-operator
   - app-kustomization.yaml

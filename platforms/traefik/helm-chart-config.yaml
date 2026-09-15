@@ -1,0 +1,13 @@
+apiVersion: helm.cattle.io/v1
+kind: HelmChartConfig
+metadata:
+  name: traefik
+  namespace: kube-system
+spec:
+  # Customize the existing k3s-managed chart; do not install a second Traefik.
+  valuesContent: |-
+    providers:
+      kubernetesIngress:
+        publishedService:
+          enabled: true
+          pathOverride: kube-system/traefik-tailnet
