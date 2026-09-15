@@ -56,6 +56,12 @@ Never replace `ENC[...]` values with plaintext. Edit encrypted files through SOP
 
 ## Conventions
 
+### Gitea database credentials
+
+- The same SOPS-encrypted `platforms/gitea/secret-values.yaml` stores `postgresql.global.postgresql.auth`: database/username `gitea`, an application `password`, and an independent `postgresPassword` for the maintenance-only `postgres` superuser. Do not use the superuser as Gitea's application login or reuse the web-admin password.
+- Gitea chart 12.5.3 derives its database `NAME`, `USER`, and `PASSWD` from these values. The PostgreSQL subchart also uses them for its `gitea-postgresql` Secret; do not introduce a separate `gitea.config.database.PASSWD` source of truth.
+- Updating Helm values or a Secret does not by itself rotate passwords in an initialized PostgreSQL database. Change the existing roles, verify TCP authentication, synchronize Secrets, and then resume reconciliation. Keep all PVCs and database ownership intact.
+
 - Resource names match the directory/component name; selectors use `app.kubernetes.io/name: <name>` (Tailscale operator follows upstream `app: operator` instead).
 - Components get their own namespace in the same root — except `headlamp` (in `kube-system`) and `coredns` (ConfigMap in `kube-system`).
 - Images are pinned to explicit tags, except Tailscale operator (`stable`) and Headlamp (`latest`).
