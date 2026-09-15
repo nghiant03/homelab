@@ -7,3 +7,4 @@ resources:
   - helm-repository.yaml
   - helm-release.yaml
   - secret-values.yaml
+  - secret-admin.yaml

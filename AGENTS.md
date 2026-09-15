@@ -47,6 +47,13 @@ Encrypted Secrets currently committed: `platforms/soft-serve/secret-admin-key.ya
 
 Never replace `ENC[...]` values with plaintext. Edit encrypted files through SOPS (`sops <file>`), not with a plain editor. Non-`data`/`stringData` fields stay readable — keep sensitive values out of them.
 
+### Gitea break-glass credentials
+
+- `platforms/gitea/secret-admin.yaml` is the SOPS-encrypted `gitea-admin` Secret (keys `username` and `password`). The chart references it through `gitea.admin.existingSecret`; `passwordMode: keepUpdated` reapplies the configured password when the admin configuration init container runs. It is not continuous password drift detection.
+- Keep `gitea_admin` for emergency access and use a separate personal account for daily work. Changing the Secret's username can create another administrator; it does not rename or remove the old account. Account rotation does not require deleting PostgreSQL or repository PVCs.
+- Store an emergency copy of the credentials in a password manager accessible without this cluster or Gitea. Back up the SOPS age private key and an encrypted copy of this repository outside the cluster as well; a cluster-only copy is not a break-glass recovery path.
+- Rotate through SOPS, reconcile the Secret, and ensure the Gitea admin configuration init container runs again (a Secret-only update does not necessarily restart the pod). Verify login before updating the emergency copy. The current Helm rollback failure must be resolved before claiming the new credentials are active.
+
 ## Conventions
 
 - Resource names match the directory/component name; selectors use `app.kubernetes.io/name: <name>` (Tailscale operator follows upstream `app: operator` instead).
