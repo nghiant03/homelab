@@ -40,9 +40,6 @@ spec:
         port: 22
 
     gitea:
-      admin:
-        existingSecret: gitea-admin
-        passwordMode: keepUpdated
       config:
         server:
           DOMAIN: gitea.home.arpa
