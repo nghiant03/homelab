@@ -7,7 +7,6 @@ resources:
   - external-dns
   - flux-system
   - kuberay-operator
-  - soft-serve
   - gitea
   - tailscale-operator
   - traefik
