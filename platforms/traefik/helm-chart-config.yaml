@@ -11,3 +11,8 @@ spec:
         publishedService:
           enabled: true
           pathOverride: kube-system/traefik-tailnet
+
+    ports:
+      ssh:
+        port: 22
+        expose: false

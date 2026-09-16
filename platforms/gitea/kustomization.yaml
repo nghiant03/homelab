@@ -6,4 +6,5 @@ resources:
   - namespace.yaml
   - helm-repository.yaml
   - helm-release.yaml
+  - ingress-tcp.yaml
   - secret-values.yaml

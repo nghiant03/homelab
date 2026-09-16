@@ -20,3 +20,7 @@ spec:
       port: 443
       targetPort: websecure
       protocol: TCP
+    - name: ssh
+      port: 22
+      targetPort: ssh
+      protocol: TCP
