@@ -36,3 +36,8 @@ spec:
 
       vulnerabilityScan: enable
       relevancy: disable
+
+    kubevuln:
+      resources:
+        limits:
+          ephemeral-storage: 30Gi
