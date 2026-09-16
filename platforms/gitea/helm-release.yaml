@@ -42,9 +42,9 @@ spec:
     gitea:
       config:
         server:
-          DOMAIN: gitea.homelab.arpa
-          ROOT_URL: https://gitea.homelab.arpa/
-          SSH_DOMAIN: gitea.homelab.arpa
+          DOMAIN: gitea.home.arpa
+          ROOT_URL: https://gitea.home.arpa/
+          SSH_DOMAIN: gitea.home.arpa
           SSH_PORT: 22
           SSH_LISTEN_PORT: 2222
           START_SSH_SERVER: true
@@ -83,11 +83,11 @@ spec:
       annotations:
         cert-manager.io/cluster-issuer: homelab-ca
       hosts:
-        - host: gitea.homelab.arpa
+        - host: gitea.home.arpa
           paths:
             - path: /
               pathType: Prefix
       tls:
         - hosts:
-            - gitea.homelab.arpa
+            - gitea.home.arpa
           secretName: gitea-tls
