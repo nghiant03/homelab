@@ -10,7 +10,7 @@ spec:
       kubernetesIngress:
         publishedService:
           enabled: true
-          pathOverride: kube-system/traefik-tailnet
+          pathOverride: kube-system/tailnet-traefik
 
     ports:
       ssh:

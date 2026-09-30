@@ -1,10 +1,10 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: traefik-tailnet
+  name: tailnet-traefik
   namespace: kube-system
   annotations:
-    tailscale.com/hostname: traefik-tailnet
+    tailscale.com/hostname: tailnet-traefik
 spec:
   type: LoadBalancer
   loadBalancerClass: tailscale
