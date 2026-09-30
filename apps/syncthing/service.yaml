@@ -1,0 +1,35 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: syncthing
+  namespace: syncthing
+spec:
+  selector:
+    app.kubernetes.io/name: syncthing
+  ports:
+    - name: http
+      port: 8384
+      targetPort: http
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: syncthing-tailnet
+  namespace: syncthing
+  annotations:
+    tailscale.com/hostname: syncthing
+    external-dns.kubernetes.io/hostname: syncthing-sync.home.arpa
+spec:
+  type: LoadBalancer
+  loadBalancerClass: tailscale
+  selector:
+    app.kubernetes.io/name: syncthing
+  ports:
+    - name: listen-tcp
+      port: 22000
+      targetPort: listen-tcp
+      protocol: TCP
+    - name: listen-quic
+      port: 22000
+      targetPort: listen-udp
+      protocol: UDP
