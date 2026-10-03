@@ -12,6 +12,7 @@ metadata:
     gethomepage.dev/description: Kubernetes dashboard
     gethomepage.dev/href: "https://headlamp.home.arpa/"
     gethomepage.dev/pod-selector: "app.kubernetes.io/name=headlamp"
+    gethomepage.dev/showStats: "true"
 spec:
   ingressClassName: traefik
   tls:

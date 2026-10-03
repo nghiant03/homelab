@@ -12,6 +12,7 @@ metadata:
     gethomepage.dev/description: Sync hub for password databases
     gethomepage.dev/href: "https://syncthing.home.arpa/"
     gethomepage.dev/pod-selector: "app.kubernetes.io/name=syncthing"
+    gethomepage.dev/showStats: "true"
 spec:
   ingressClassName: traefik
   tls:

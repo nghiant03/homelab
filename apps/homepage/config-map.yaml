@@ -22,55 +22,102 @@ data:
       hideVisitURL: false
     layout:
       Apps:
+        tab: Overview
+        icon: mdi-view-grid
+        style: row
+        columns: 3
+      Network:
+        tab: Overview
+        icon: mdi-web
+        style: row
+        columns: 3
+      Docs:
+        tab: Overview
+        icon: mdi-book-open-variant
+      Platform:
+        tab: Cluster
+        icon: mdi-server
         style: row
         columns: 3
       Kubernetes:
+        tab: Cluster
+        icon: kubernetes.png
         style: row
         columns: 2
-      Network:
-        style: row
-        columns: 3
 
   custom.css: |
-    /* Dark glass theme — fully self-contained, no external assets.
-       Background, grain, cards, and browser surfaces are all pure CSS.
-       Targets homepage's stable hooks (.service-card / .services-group). */
-
     :root {
-      --hp-bg: #0a0e17;
-      --hp-glow-top: rgba(56, 189, 248, 0.08);    /* sky */
-      --hp-glow-bottom: rgba(99, 102, 241, 0.09); /* indigo */
+      --hp-bg: #070a12;
+      --hp-glow-top: rgba(56, 189, 248, 0.16);    /* sky */
+      --hp-glow-bottom: rgba(99, 102, 241, 0.15); /* indigo */
       --hp-accent: rgba(125, 211, 252, 0.9);      /* sky-300 */
     }
 
     body {
       background:
-        radial-gradient(1100px 550px at 85% -10%, var(--hp-glow-top), transparent 60%),
-        radial-gradient(900px 500px at -10% 110%, var(--hp-glow-bottom), transparent 60%),
+        radial-gradient(1300px 700px at 85% -15%, var(--hp-glow-top), transparent 60%),
+        radial-gradient(1000px 600px at -10% 115%, var(--hp-glow-bottom), transparent 60%),
+        radial-gradient(ellipse at center, transparent 55%, rgba(0, 0, 0, 0.45) 100%),
         var(--hp-bg) !important;
       background-attachment: fixed !important;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
     }
 
-    /* Film grain: inline SVG turbulence, no network request */
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      z-index: 9999;
+      pointer-events: none;
+      background: linear-gradient(90deg, rgba(56, 189, 248, 0.7), rgba(99, 102, 241, 0.7), transparent 80%);
+    }
+
     body::after {
       content: "";
       position: fixed;
       inset: 0;
       z-index: 9999;
       pointer-events: none;
-      opacity: 0.03;
+      opacity: 0.05;
       background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='0.6'/%3E%3C/svg%3E");
     }
 
-    /* Frosted cards — the blur comes from settings.yaml cardBlur;
-       here we give them an edge, depth, and a hover response */
-    .service-card {
-      background: rgba(255, 255, 255, 0.03) !important;
+    .services-group > button {
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      padding-bottom: 0.5rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .service-group-name {
+      text-transform: uppercase !important;
+      letter-spacing: 0.14em !important;
+      font-size: 0.8rem !important;
+      font-weight: 600 !important;
+      color: var(--hp-accent) !important;
+    }
+
+    #tabs > div {
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
       border: 1px solid rgba(255, 255, 255, 0.08) !important;
       border-radius: 12px !important;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35) !important;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+    }
+
+    button[id$="-tab"] {
+      border-radius: 10px !important;
+      transition: background-color 150ms ease, color 150ms ease !important;
+    }
+
+    .service-card {
+      background: rgba(255, 255, 255, 0.05) !important;
+      border: 1px solid rgba(255, 255, 255, 0.1) !important;
+      border-radius: 12px !important;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4) !important;
       transition:
         transform 180ms cubic-bezier(0.2, 0.8, 0.2, 1),
         border-color 180ms ease,
@@ -79,11 +126,10 @@ data:
 
     .service-card:hover {
       transform: translateY(-2px);
-      border-color: rgba(125, 211, 252, 0.35) !important;
-      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5) !important;
+      border-color: rgba(125, 211, 252, 0.4) !important;
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.55) !important;
     }
 
-    /* Browser surfaces: selection, scrollbar, focus ring */
     ::selection {
       background: rgba(56, 189, 248, 0.28);
       color: #e2e8f0;
@@ -150,10 +196,44 @@ data:
         target: _blank
 
   services.yaml: |
-    # Services with web ingresses (Homepage, Gitea, Headlamp, Syncthing) are
-    # discovered automatically from their gethomepage.dev/* annotations and
-    # land in the "Apps" / "Kubernetes" groups. This file only carries manual
-    # entries for things without an in-cluster ingress.
+    - Platform:
+        - Flux:
+            icon: flux.png
+            description: GitOps reconciliation
+            namespace: flux-system
+            podSelector: app.kubernetes.io/part-of=flux
+            showStats: true
+        - cert-manager:
+            icon: cert-manager.png
+            description: TLS certificates (homelab-ca)
+            namespace: cert-manager
+            podSelector: app.kubernetes.io/instance=cert-manager
+            showStats: true
+        - Traefik:
+            icon: traefik.png
+            description: Shared tailnet entry point
+            namespace: kube-system
+            podSelector: app.kubernetes.io/name=traefik
+            showStats: true
+        - external-dns:
+            icon: mdi-dns
+            description: home.arpa records via RFC2136
+            namespace: external-dns
+            podSelector: app.kubernetes.io/name=external-dns
+            showStats: true
+        - cloudflared:
+            icon: cloudflare.png
+            description: Cloudflare Tunnel connector
+            namespace: cloudflared
+            podSelector: app.kubernetes.io/name=cloudflared
+            showStats: true
+        - Tailscale Operator:
+            icon: tailscale.png
+            description: Tailnet proxies & services
+            namespace: tailscale
+            podSelector: app=operator
+            showStats: true
+
     - Network:
         - Tailscale:
             icon: tailscale.png

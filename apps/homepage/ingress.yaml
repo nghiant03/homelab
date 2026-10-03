@@ -9,8 +9,9 @@ metadata:
     gethomepage.dev/name: Homepage
     gethomepage.dev/group: Apps
     gethomepage.dev/icon: homepage.png
-    gethomepage.dev/description: This dashboard
+    gethomepage.dev/description: Service catalog & cluster status
     gethomepage.dev/pod-selector: "app.kubernetes.io/name=homepage"
+    gethomepage.dev/showStats: "true"
 spec:
   ingressClassName: traefik
   tls:
