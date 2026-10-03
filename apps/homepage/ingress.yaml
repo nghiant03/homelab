@@ -5,6 +5,12 @@ metadata:
   namespace: homepage
   annotations:
     cert-manager.io/cluster-issuer: homelab-ca
+    gethomepage.dev/enabled: "true"
+    gethomepage.dev/name: Homepage
+    gethomepage.dev/group: Apps
+    gethomepage.dev/icon: homepage.png
+    gethomepage.dev/description: This dashboard
+    gethomepage.dev/pod-selector: "app.kubernetes.io/name=homepage"
 spec:
   ingressClassName: traefik
   tls:

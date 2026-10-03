@@ -12,11 +12,38 @@ data:
     title: Homelab
     theme: dark
     color: zinc
+    headerStyle: clean
+    statusStyle: dot
+    hideVersion: true
+    layout:
+      Apps:
+        style: row
+        columns: 3
+      Kubernetes:
+        style: row
+        columns: 2
+      Network:
+        style: row
+        columns: 3
 
   custom.css: ""
   custom.js: ""
-  bookmarks.yaml: ""
   docker.yaml: ""
+
+  bookmarks.yaml: |
+    - Docs:
+        - Flux:
+            - abbr: FX
+              href: https://fluxcd.io/flux/
+        - Homepage:
+            - abbr: HP
+              href: https://gethomepage.dev/latest/
+        - Traefik:
+            - abbr: TR
+              href: https://doc.traefik.io/traefik/
+        - cert-manager:
+            - abbr: CM
+              href: https://cert-manager.io/docs/
 
   widgets.yaml: |
     - kubernetes:
@@ -30,14 +57,35 @@ data:
           show: true
           cpu: true
           memory: true
+    - datetime:
+        format:
+          dateStyle: long
+          timeStyle: short
+          hour12: false
+    - search:
+        provider: duckduckgo
+        target: _blank
 
   services.yaml: |
+    # Services with web ingresses (Homepage, Gitea, Headlamp, Syncthing) are
+    # discovered automatically from their gethomepage.dev/* annotations and
+    # land in the "Apps" / "Kubernetes" groups. This file only carries manual
+    # entries for things without an in-cluster ingress.
     - Network:
         - Tailscale:
             icon: tailscale.png
             href: https://login.tailscale.com/admin/machines
-            description: Tailnet device status
+            description: Tailnet admin console & device status
             widget:
               type: tailscale
               deviceid: n3c6UhXsgY11CNTRL
               key: "{{HOMEPAGE_VAR_TAILSCALE_KEY}}"
+        - Technitium DNS:
+            icon: technitium.png
+            href: http://100.90.10.86:5380
+            ping: http://100.90.10.86:5380
+            description: Authoritative DNS for home.arpa
+        - Cloudflare Tunnel:
+            icon: cloudflare-zero-trust.png
+            href: https://one.dash.cloudflare.com/
+            description: cloudflared tunnel status & config

@@ -82,6 +82,12 @@ spec:
       className: traefik
       annotations:
         cert-manager.io/cluster-issuer: homelab-ca
+        gethomepage.dev/enabled: "true"
+        gethomepage.dev/name: Gitea
+        gethomepage.dev/group: Apps
+        gethomepage.dev/icon: gitea.png
+        gethomepage.dev/description: Git server & Flux source of truth
+        gethomepage.dev/pod-selector: "app.kubernetes.io/name=gitea"
       hosts:
         - host: gitea.home.arpa
           paths:
