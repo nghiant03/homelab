@@ -11,11 +11,10 @@ data:
   settings.yaml: |
     title: Homelab
     theme: dark
-    color: slate
+    color: zinc
     headerStyle: clean
     statusStyle: dot
     hideVersion: true
-    cardBlur: md
     quicklaunch:
       searchDescriptions: true
       hideInternetSearch: false
@@ -47,43 +46,13 @@ data:
 
   custom.css: |
     :root {
-      --hp-bg: #070a12;
-      --hp-glow-top: rgba(56, 189, 248, 0.16);    /* sky */
-      --hp-glow-bottom: rgba(99, 102, 241, 0.15); /* indigo */
-      --hp-accent: rgba(125, 211, 252, 0.9);      /* sky-300 */
+      --hp-accent: #fbbf24;
     }
 
-    body {
-      background:
-        radial-gradient(1300px 700px at 85% -15%, var(--hp-glow-top), transparent 60%),
-        radial-gradient(1000px 600px at -10% 115%, var(--hp-glow-bottom), transparent 60%),
-        radial-gradient(ellipse at center, transparent 55%, rgba(0, 0, 0, 0.45) 100%),
-        var(--hp-bg) !important;
-      background-attachment: fixed !important;
+    html {
+      --bg-color: 12 13 16 !important;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
-    }
-
-    body::before {
-      content: "";
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 2px;
-      z-index: 9999;
-      pointer-events: none;
-      background: linear-gradient(90deg, rgba(56, 189, 248, 0.7), rgba(99, 102, 241, 0.7), transparent 80%);
-    }
-
-    body::after {
-      content: "";
-      position: fixed;
-      inset: 0;
-      z-index: 9999;
-      pointer-events: none;
-      opacity: 0.05;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='0.6'/%3E%3C/svg%3E");
     }
 
     .services-group > button {
@@ -100,54 +69,37 @@ data:
       color: var(--hp-accent) !important;
     }
 
-    #tabs > div {
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border: 1px solid rgba(255, 255, 255, 0.08) !important;
-      border-radius: 12px !important;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
-    }
-
-    button[id$="-tab"] {
-      border-radius: 10px !important;
-      transition: background-color 150ms ease, color 150ms ease !important;
-    }
-
     .service-card {
-      background: rgba(255, 255, 255, 0.05) !important;
-      border: 1px solid rgba(255, 255, 255, 0.1) !important;
-      border-radius: 12px !important;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4) !important;
-      transition:
-        transform 180ms cubic-bezier(0.2, 0.8, 0.2, 1),
-        border-color 180ms ease,
-        box-shadow 180ms ease !important;
+      background: #14161b !important;
+      border: 1px solid #23262d !important;
+      border-radius: 10px !important;
+      box-shadow: none !important;
+      transition: border-color 150ms ease, background-color 150ms ease !important;
     }
 
     .service-card:hover {
-      transform: translateY(-2px);
-      border-color: rgba(125, 211, 252, 0.4) !important;
-      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.55) !important;
+      background: #181b21 !important;
+      border-color: rgba(251, 191, 36, 0.5) !important;
+    }
+
+    #tabs > div {
+      background: #14161b !important;
+      border: 1px solid #23262d !important;
+      border-radius: 10px !important;
+    }
+
+    button[id$="-tab"] {
+      border-radius: 8px !important;
     }
 
     ::selection {
-      background: rgba(56, 189, 248, 0.28);
-      color: #e2e8f0;
+      background: rgba(251, 191, 36, 0.3);
+      color: #fafaf9;
     }
 
     * {
       scrollbar-width: thin;
-      scrollbar-color: rgba(148, 163, 184, 0.3) transparent;
-    }
-
-    ::-webkit-scrollbar {
-      width: 8px;
-      height: 8px;
-    }
-
-    ::-webkit-scrollbar-thumb {
-      background: rgba(148, 163, 184, 0.25);
-      border-radius: 4px;
+      scrollbar-color: #3f4249 transparent;
     }
 
     a:focus-visible,
