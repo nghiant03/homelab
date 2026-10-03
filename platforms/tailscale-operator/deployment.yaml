@@ -38,7 +38,7 @@ spec:
                     - name: CLIENT_SECRET_FILE
                       value: /oauth/client_secret
                     - name: PROXY_IMAGE
-                      value: tailscale/tailscale:v1.96.5
+                      value: tailscale/tailscale:v1.102.4
                     - name: PROXY_TAGS
                       value: tag:k3s
                     - name: APISERVER_PROXY
