@@ -31,19 +31,6 @@ spec:
             - name: headlamp-plugins
               mountPath: /headlamp/plugins
 
-        - name: headlamp-kubescape-plugin-install
-          image: quay.io/kubescape/headlamp-plugin:v0.11.0
-          command:
-            - /bin/sh
-            - -c
-          args: 
-            - |
-              mkdir -p /headlamp/plugins
-              cp -r /plugins/* /headlamp/plugins/
-          volumeMounts:
-            - name: headlamp-plugins
-              mountPath: /headlamp/plugins
-
       containers:
         - name: headlamp
           image: ghcr.io/headlamp-k8s/headlamp:latest
