@@ -6,8 +6,9 @@ resources:
   - coredns
   - external-dns
   - flux-system
-  - kuberay-operator
   - gitea
+  - headlamp
+  - kuberay-operator
   - tailscale-operator
   - traefik
   - trust-manager
