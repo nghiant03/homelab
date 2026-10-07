@@ -11,5 +11,4 @@ resources:
   - tailscale-operator
   - traefik
   - trust-manager
-  - kubescape-operator
   - app-kustomization.yaml
