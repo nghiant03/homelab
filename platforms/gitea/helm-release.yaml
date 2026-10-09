@@ -54,6 +54,7 @@ spec:
 
         repository:
           DEFAULT_BRANCH: main
+          ENABLE_PUSH_CREATE_USER: true
 
     persistence:
       enabled: true
