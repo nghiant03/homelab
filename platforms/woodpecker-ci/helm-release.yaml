@@ -27,7 +27,7 @@ spec:
         cert-manager.io/cluster-issuer: homelab-ca
         gethomepage.dev/enabled: "true"
         gethomepage.dev/name: "Woodpecker CI"
-        gethomepage.dev/group: 
+        gethomepage.dev/group: Apps
         gethomepage.dev/icon: woodpecker-ci.png
         gethomepage.dev/description: CI/CD Server and Engine
         gethomepage.dev/pod-selector: "app.kubernetes.io/name=woodpecker-ci"
