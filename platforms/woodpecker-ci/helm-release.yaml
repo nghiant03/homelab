@@ -29,7 +29,7 @@ spec:
         gethomepage.dev/name: "Woodpecker CI"
         gethomepage.dev/group: 
         gethomepage.dev/icon: woodpecker-ci.png
-        gethomepage.dev/description: Git server & Flux source of truth
+        gethomepage.dev/description: CI/CD Server and Engine
         gethomepage.dev/pod-selector: "app.kubernetes.io/name=woodpecker-ci"
         gethomepage.dev/showStats: "true"
       hosts:
