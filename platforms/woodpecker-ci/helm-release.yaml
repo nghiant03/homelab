@@ -7,7 +7,7 @@ spec:
   interval: 30m
   chartRef:
     kind: OCIRepository
-    name: woodpecker
+    name: woodpecker-ci
     namespace: woodpecker-ci
     
   install:
