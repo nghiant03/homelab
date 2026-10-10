@@ -12,4 +12,5 @@ resources:
   - tailscale-operator
   - traefik
   - trust-manager
+  - woodpecker-ci
   - app-kustomization.yaml

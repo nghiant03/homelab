@@ -1,0 +1,43 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: woodpecker-ci
+  namespace: woodpecker-ci
+spec:
+  interval: 30m
+  chartRef:
+    kind: OCIRepository
+    name: woodpecker
+    namespace: woodpecker-ci
+    
+  install:
+    createNamespace: false
+    remediation:
+      retries: 3
+
+  upgrade:
+    remediation:
+      retries: 3
+
+  values:
+    ingress:
+      enabled: true
+      className: traefik
+      annotations:
+        cert-manager.io/cluster-issuer: homelab-ca
+        gethomepage.dev/enabled: "true"
+        gethomepage.dev/name: "Woodpecker CI"
+        gethomepage.dev/group: 
+        gethomepage.dev/icon: woodpecker-ci.png
+        gethomepage.dev/description: Git server & Flux source of truth
+        gethomepage.dev/pod-selector: "app.kubernetes.io/name=woodpecker-ci"
+        gethomepage.dev/showStats: "true"
+      hosts:
+        - host: woodpecker-ci.home.arpa
+          paths:
+            - path: /
+              pathType: Prefix
+      tls:
+        - hosts:
+            - woodpecker-ci.home.arpa
+          secretName: woodpecker-ci-tls
