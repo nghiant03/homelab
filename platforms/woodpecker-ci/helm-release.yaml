@@ -22,7 +22,21 @@ spec:
   values:
     agent:
       env:
+        WOODPECKER_GITEA: true
+        WOODPECKER_GITEA_CLIENT:
+          valueFrom:
+            secretKeyRef:
+              name: gitea-oauth
+              key: client-id
+        WOODPECKER_GITEA_SECRET:
+          valueFrom:
+            secretKeyRef:
+              name: gitea-oauth
+              key: client-secret
+        WOODPECKER_GITEA_URL: "http://gitea-http.gitea.svc.cluster.local:3000"
+        WOODPECKER_EXPERT_FORGE_OAUTH_HOST: "https://gitea.home.arpa"
         WOODPECKER_BACKEND_K8S_NAMESPACE: woodpecker-ci
+
     ingress:
       enabled: true
       className: traefik
