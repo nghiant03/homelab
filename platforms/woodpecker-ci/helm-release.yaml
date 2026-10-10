@@ -20,7 +20,7 @@ spec:
       retries: 3
 
   values:
-    agent:
+    server:
       env:
         WOODPECKER_GITEA: true
         WOODPECKER_GITEA_CLIENT:
@@ -35,6 +35,9 @@ spec:
               key: client-secret
         WOODPECKER_GITEA_URL: "http://gitea-http.gitea.svc.cluster.local:3000"
         WOODPECKER_EXPERT_FORGE_OAUTH_HOST: "https://gitea.home.arpa"
+
+    agent:
+      env:
         WOODPECKER_BACKEND_K8S_NAMESPACE: woodpecker-ci
 
     ingress:
