@@ -22,6 +22,8 @@ spec:
   values:
     server:
       env:
+        WOODPECKER_OPEN: true
+        WOODPECKER_ADMIN: nghiant03
         WOODPECKER_GITEA: true
         WOODPECKER_GITEA_CLIENT:
           valueFrom:
