@@ -9,3 +9,4 @@ resources:
   - ingress-class.yaml
   - role.yaml
   - cluster-role.yaml
+  - secret-oauth.yaml

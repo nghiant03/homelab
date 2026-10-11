@@ -34,9 +34,9 @@ spec:
                     - name: OPERATOR_INGRESS_CLASS_NAME
                       value: tailscale
                     - name: CLIENT_ID_FILE
-                      value: /oauth/client_id
+                      value: /oauth/client-id
                     - name: CLIENT_SECRET_FILE
-                      value: /oauth/client_secret
+                      value: /oauth/client-secret
                     - name: PROXY_IMAGE
                       value: tailscale/tailscale:v1.102.4
                     - name: PROXY_TAGS
