@@ -34,31 +34,33 @@ spec:
               name: gitea-oauth
               key: client-secret
         WOODPECKER_GITEA_URL: "http://gitea-http.gitea.svc.cluster.local:3000"
+        WOODPECKER_HOST: "https://woodpecker-ci.home.arpa/"
         WOODPECKER_EXPERT_FORGE_OAUTH_HOST: "https://gitea.home.arpa"
+
+      ingress:
+        enabled: true
+        ingressClassName: traefik
+        annotations:
+          cert-manager.io/cluster-issuer: homelab-ca
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/name: "Woodpecker CI"
+          gethomepage.dev/group: Apps
+          gethomepage.dev/icon: woodpecker-ci.png
+          gethomepage.dev/description: CI/CD Server and Engine
+          gethomepage.dev/pod-selector: "app.kubernetes.io/name=woodpecker-ci"
+          gethomepage.dev/showStats: "true"
+        hosts:
+          - host: woodpecker-ci.home.arpa
+            paths:
+              - path: /
+                pathType: Prefix
+        tls:
+          - hosts:
+              - woodpecker-ci.home.arpa
+            secretName: woodpecker-ci-tls
 
     agent:
       env:
         WOODPECKER_SERVER: "woodpecker-ci-server.woodpecker-ci.svc.cluster.local:9000"
         WOODPECKER_BACKEND_K8S_NAMESPACE: woodpecker-ci
 
-    ingress:
-      enabled: true
-      className: traefik
-      annotations:
-        cert-manager.io/cluster-issuer: homelab-ca
-        gethomepage.dev/enabled: "true"
-        gethomepage.dev/name: "Woodpecker CI"
-        gethomepage.dev/group: Apps
-        gethomepage.dev/icon: woodpecker-ci.png
-        gethomepage.dev/description: CI/CD Server and Engine
-        gethomepage.dev/pod-selector: "app.kubernetes.io/name=woodpecker-ci"
-        gethomepage.dev/showStats: "true"
-      hosts:
-        - host: woodpecker-ci.home.arpa
-          paths:
-            - path: /
-              pathType: Prefix
-      tls:
-        - hosts:
-            - woodpecker-ci.home.arpa
-          secretName: woodpecker-ci-tls
