@@ -56,6 +56,9 @@ spec:
           DEFAULT_BRANCH: main
           ENABLE_PUSH_CREATE_USER: true
 
+        webhook:
+          ALLOWED_HOST_LIST: "*.home.arpa"
+
     persistence:
       enabled: true
       size: 20Gi
