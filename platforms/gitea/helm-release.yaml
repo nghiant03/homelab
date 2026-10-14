@@ -59,6 +59,17 @@ spec:
         webhook:
           ALLOWED_HOST_LIST: "*.home.arpa"
 
+    extraVolumes:
+      - name: homelab-trust
+        configMap:
+          name: homelab-trust
+
+    extraContainerVolumeMounts:
+      - name: homelab-trust
+        mountPath: /etc/ssl/certs/ca-certificates.crt
+        subPath: ca-certificates.crt
+        readOnly: true
+
     persistence:
       enabled: true
       size: 20Gi
