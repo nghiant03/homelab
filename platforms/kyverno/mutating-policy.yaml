@@ -16,6 +16,8 @@ spec:
     - name: check-runner-namespace
       expression: object.metadata.namespace in ["woodpecker-ci", "renovate"]
   mutations:
+    # Apply only the CA entries; copying existing volumes includes atomic
+    # projected-volume fields that ApplyConfiguration cannot mutate.
     - patchType: ApplyConfiguration
       applyConfiguration:
         expression: |
@@ -23,38 +25,34 @@ spec:
             spec: Object.spec{
               containers: object.spec.containers.map(container, Object.spec.containers{
                 name: container.name,
-                volumeMounts: (has(container.volumeMounts) && container.volumeMounts.exists(vm, vm.name == "homelab-ca-bundle"))
-                  ? container.volumeMounts
-                  : ((has(container.volumeMounts) ? container.volumeMounts : []) + [
-                      Object.spec.containers.volumeMounts{
-                        name: "homelab-ca-bundle",
-                        mountPath: "/etc/ssl/certs/ca-certificates.crt",
-                        subPath: "ca-certificates.crt",
-                        readOnly: true
-                      },
-                      Object.spec.containers.volumeMounts{
-                        name: "homelab-ca-registry",
-                        mountPath: "/etc/docker/certs.d/gitea.home.arpa/ca.crt",
-                        subPath: "ca-certificates.crt",
-                        readOnly: true
-                      }
-                    ])
+                volumeMounts: [
+                  Object.spec.containers.volumeMounts{
+                    name: "homelab-ca-bundle",
+                    mountPath: "/etc/ssl/certs/ca-certificates.crt",
+                    subPath: "ca-certificates.crt",
+                    readOnly: true
+                  },
+                  Object.spec.containers.volumeMounts{
+                    name: "homelab-ca-registry",
+                    mountPath: "/etc/docker/certs.d/gitea.home.arpa/ca.crt",
+                    subPath: "ca-certificates.crt",
+                    readOnly: true
+                  }
+                ]
               }),
-              volumes: (has(object.spec.volumes) && object.spec.volumes.exists(v, v.name == "homelab-ca-bundle"))
-                ? object.spec.volumes
-                : ((has(object.spec.volumes) ? object.spec.volumes : []) + [
-                    Object.spec.volumes{
-                      name: "homelab-ca-bundle",
-                      configMap: Object.spec.volumes.configMap{
-                        name: "homelab-trust"
-                      }
-                    },
-                    Object.spec.volumes{
-                      name: "homelab-ca-registry",
-                      configMap: Object.spec.volumes.configMap{
-                        name: "homelab-trust"
-                      }
-                    }
-                  ])
+              volumes: [
+                Object.spec.volumes{
+                  name: "homelab-ca-bundle",
+                  configMap: Object.spec.volumes.configMap{
+                    name: "homelab-trust"
+                  }
+                },
+                Object.spec.volumes{
+                  name: "homelab-ca-registry",
+                  configMap: Object.spec.volumes.configMap{
+                    name: "homelab-trust"
+                  }
+                }
+              ]
             }
           }
