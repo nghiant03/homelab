@@ -56,7 +56,7 @@ spec:
           DEFAULT_BRANCH: main
           ENABLE_PUSH_CREATE_USER: true
 
-        webhook:
+        security:
           ALLOWED_HOST_LIST: "*.home.arpa"
 
     extraVolumes:
