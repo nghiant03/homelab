@@ -38,7 +38,6 @@ spec:
         WOODPECKER_GITEA_URL: "http://gitea-http.gitea.svc.cluster.local:3000"
         WOODPECKER_HOST: "https://woodpecker-ci.home.arpa/"
         WOODPECKER_EXPERT_FORGE_OAUTH_HOST: "https://gitea.home.arpa"
-        WOODPECKER_ENVIRONMENT: "PLUGIN_SKIP_VERIFY:true,GIT_SSL_NO_VERIFY:true"
 
       ingress:
         enabled: true
