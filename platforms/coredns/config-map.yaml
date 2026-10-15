@@ -6,5 +6,5 @@ metadata:
 data:
   home-arpa.override: |
     forward home.arpa 100.90.10.86 {
-      prefer_tcp
+      force_tcp
     }
