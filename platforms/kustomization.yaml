@@ -9,6 +9,7 @@ resources:
   - gitea
   - headlamp
   - kuberay-operator
+  - renovate
   - tailscale-operator
   - traefik
   - trust-manager
