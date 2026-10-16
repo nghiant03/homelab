@@ -44,6 +44,7 @@ spec:
         server:
           DOMAIN: gitea.home.arpa
           ROOT_URL: https://gitea.home.arpa/
+          PUBLIC_URL_DETECTION: never
           SSH_DOMAIN: gitea.home.arpa
           SSH_PORT: 22
           SSH_LISTEN_PORT: 2222
