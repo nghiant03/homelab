@@ -185,6 +185,18 @@ data:
             namespace: tailscale
             podSelector: app=operator
             showStats: true
+        - Kyverno:
+            icon: mdi-shield-check
+            description: Policies & runner CA injection
+            namespace: kyverno
+            podSelector: app.kubernetes.io/instance=kyverno
+            showStats: true
+        - Renovate:
+            icon: mdi-autorenew
+            description: Dependency update PRs
+            namespace: renovate
+            podSelector: app.kubernetes.io/name=renovate
+            showStats: true
 
     - Network:
         - Tailscale:
