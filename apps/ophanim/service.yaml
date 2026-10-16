@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: ophanim
+  namespace: ophanim
+spec:
+  type: ClusterIP
+  selector:
+    app.kubernetes.io/name: ophanim
+  ports:
+    - name: http
+      port: 4321
+      targetPort: http
