@@ -24,5 +24,4 @@ spec:
 
   values:
     admissionController:
-      # Single-node cluster; more replicas would not spread across nodes.
       replicas: 1
