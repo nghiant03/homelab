@@ -30,6 +30,7 @@ spec:
           "endpoint": "https://gitea.home.arpa/api/v1",
           "autodiscover": true,
           "autodiscoverFilter": ["nghiant03/*"],
+          "configFileNames": ["workflows/renovate.json"],
           "gitAuthor": "Renovate Bot <renovate@home.arpa>",
           "labels": ["renovate"]
         }

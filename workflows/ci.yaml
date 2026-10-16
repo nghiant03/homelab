@@ -1,0 +1,13 @@
+when:
+  - event: [push, pull_request]
+
+steps:
+  - name: apps
+    image: alpine/k8s:1.35.0
+    commands:
+      - kubectl kustomize apps > /dev/null
+
+  - name: platforms
+    image: alpine/k8s:1.35.0
+    commands:
+      - kubectl kustomize platforms > /dev/null
