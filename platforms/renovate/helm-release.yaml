@@ -34,7 +34,4 @@ spec:
           "labels": ["renovate"]
         }
 
-    # SOPS-encrypted Secret `renovate-token` in this namespace; its key
-    # RENOVATE_TOKEN holds a Gitea personal access token (repo scope) for the
-    # nghiant03 account. All keys become env vars on the job pods.
     existingSecret: renovate-token
