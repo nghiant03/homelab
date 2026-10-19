@@ -14,7 +14,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: syncthing-tailnet
+  name: tailnet-syncthing
   namespace: syncthing
   annotations:
     tailscale.com/hostname: syncthing

@@ -22,7 +22,7 @@ spec:
               value: "homepage.home.arpa"
           envFrom:
             - secretRef:
-                name: homepage-secrets
+                name: homepage-widget-credentials
           ports:
             - name: http
               containerPort: 3000
