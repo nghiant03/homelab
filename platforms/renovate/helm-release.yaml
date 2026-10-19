@@ -32,7 +32,8 @@ spec:
           "autodiscoverFilter": ["nghiant03/*"],
           "configFileNames": ["workflows/renovate.json"],
           "gitAuthor": "Renovate Bot <renovate@home.arpa>",
-          "labels": ["renovate"]
+          "labels": ["renovate"],
+          "prHourlyLimit": 10
         }
 
     existingSecret: renovate-token
