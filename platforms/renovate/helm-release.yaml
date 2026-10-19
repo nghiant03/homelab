@@ -39,6 +39,8 @@ spec:
 
     cronjob:
       schedule: "*/5 * * * *"
+      concurrencyPolicy: Forbid
+      startingDeadlineSeconds: 600
 
     env:
       LOG_LEVEL: debug
