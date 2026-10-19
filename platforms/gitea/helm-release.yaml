@@ -58,10 +58,16 @@ spec:
           ENABLE_PUSH_CREATE_USER: true
 
         repository.signing:
-          SIGNING_KEY: default
+          SIGNING_KEY: 33F9026945F7AF1D98C267C19E1E8A17BF8E5DFE
+          SIGNING_NAME: Gitea
+          SIGNING_EMAIL: gitea@home.arpa
 
         security:
           ALLOWED_HOST_LIST: "*.home.arpa"
+
+    signing:
+      enabled: true
+      existingSecret: gitea-gpg-key
 
     extraVolumes:
       - name: homelab-trust
