@@ -57,6 +57,9 @@ spec:
           DEFAULT_BRANCH: main
           ENABLE_PUSH_CREATE_USER: true
 
+        repository.signing:
+          SIGNING_KEY: default
+
         security:
           ALLOWED_HOST_LIST: "*.home.arpa"
 
