@@ -37,6 +37,9 @@ spec:
 
     existingSecret: renovate-token
 
+    cronjob:
+      schedule: "*/5 * * * *"
+
     env:
       LOG_LEVEL: debug
       NODE_EXTRA_CA_CERTS: /etc/ssl/certs/ca-certificates.crt
