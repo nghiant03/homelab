@@ -1,7 +1,7 @@
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: headlamp-operator
+  name: headlamp-viewer
 rules:
   - apiGroups: [""]
     resources:
@@ -41,28 +41,6 @@ rules:
       - pods
       - nodes
     verbs: ["get", "list", "watch"]
-  - apiGroups: ["apps"]
-    resources:
-      - deployments
-      - daemonsets
-      - statefulsets
-      - replicasets
-    verbs: ["create", "update", "patch", "delete"]
-  - apiGroups: ["batch"]
-    resources:
-      - jobs
-      - cronjobs
-    verbs: ["create", "update", "patch", "delete"]
-  - apiGroups: [""]
-    resources:
-      - pods
-    verbs: ["delete"]
-  - apiGroups: ["apps"]
-    resources:
-      - deployments/scale
-      - statefulsets/scale
-      - replicasets/scale
-    verbs: ["get", "update", "patch"]
   - apiGroups: ["apiextensions.k8s.io"]
     resources:
       - customresourcedefinitions
@@ -123,12 +101,12 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
-  name: headlamp-operator
+  name: headlamp-viewer
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: headlamp-operator
+  name: headlamp-viewer
 subjects:
   - kind: ServiceAccount
-    name: headlamp-operator
+    name: headlamp-viewer
     namespace: kube-system

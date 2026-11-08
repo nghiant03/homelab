@@ -13,7 +13,8 @@ spec:
       labels:
         app.kubernetes.io/name: headlamp
     spec:
-      serviceAccountName: headlamp-operator
+      serviceAccountName: headlamp
+      automountServiceAccountToken: true
 
       initContainers:
         - name: headlamp-flux-plugin-install
