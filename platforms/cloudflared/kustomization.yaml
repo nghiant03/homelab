@@ -5,3 +5,4 @@ resources:
   - namespace.yaml
   - secret-token.yaml
   - deployment.yaml
+  - network-policy.yaml

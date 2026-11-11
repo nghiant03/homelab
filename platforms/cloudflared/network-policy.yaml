@@ -1,0 +1,82 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: cloudflared
+  namespace: cloudflared
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: cloudflared
+  policyTypes:
+    - Ingress
+    - Egress
+  ingress: []
+  egress:
+    - to:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: ophanim
+          podSelector:
+            matchLabels:
+              app.kubernetes.io/name: ophanim
+      ports:
+        - protocol: TCP
+          port: 4321
+    - to:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: kube-system
+          podSelector:
+            matchLabels:
+              k8s-app: kube-dns
+      ports:
+        - protocol: UDP
+          port: 53
+        - protocol: TCP
+          port: 53
+    - to:
+        - ipBlock:
+            cidr: 198.41.192.167/32
+        - ipBlock:
+            cidr: 198.41.192.67/32
+        - ipBlock:
+            cidr: 198.41.192.57/32
+        - ipBlock:
+            cidr: 198.41.192.107/32
+        - ipBlock:
+            cidr: 198.41.192.27/32
+        - ipBlock:
+            cidr: 198.41.192.7/32
+        - ipBlock:
+            cidr: 198.41.192.227/32
+        - ipBlock:
+            cidr: 198.41.192.47/32
+        - ipBlock:
+            cidr: 198.41.192.37/32
+        - ipBlock:
+            cidr: 198.41.192.77/32
+        - ipBlock:
+            cidr: 198.41.200.13/32
+        - ipBlock:
+            cidr: 198.41.200.193/32
+        - ipBlock:
+            cidr: 198.41.200.33/32
+        - ipBlock:
+            cidr: 198.41.200.233/32
+        - ipBlock:
+            cidr: 198.41.200.53/32
+        - ipBlock:
+            cidr: 198.41.200.63/32
+        - ipBlock:
+            cidr: 198.41.200.113/32
+        - ipBlock:
+            cidr: 198.41.200.73/32
+        - ipBlock:
+            cidr: 198.41.200.43/32
+        - ipBlock:
+            cidr: 198.41.200.23/32
+      ports:
+        - protocol: UDP
+          port: 7844
+        - protocol: TCP
+          port: 7844
