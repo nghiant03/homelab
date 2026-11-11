@@ -3,5 +3,8 @@
   "ignorePaths": ["platforms/flux-system/**"],
   "kubernetes": {
     "managerFilePatterns": ["/^(apps|platforms)/.*\\.ya?ml$/"]
+  },
+  "flux": {
+    "managerFilePatterns": ["/^(apps|platforms)/.*\\.ya?ml$/"]
   }
 }
